@@ -3,8 +3,37 @@
   <head>
     <meta charset="utf-8">
     <title>To-Do List</title>
+    <link rel="stylesheet" href="/style.css">
+    <link href="https://fonts.googleapis.com/css?family=Coming+Soon|Permanent+Marker|Shadows+Into+Light+Two" rel="stylesheet">
+    <script>
+function change(id) {
+  let promise =
+fetch("/complete", {
+  method: "POST",
+  headers: {'Content-Type': 'application/json'},
+  body: JSON.stringify({id: id})
+}).then( function() {location.reload()})
+}
+    </script>
   </head>
   <body>
-    <p>Hello World</p>
+    <h1>Get something done today!</h1>
+    <form method="post">
+    <input type="text" name="todo" placeholder="Create a to-do here...">
+    <input type="submit" name="submit" value="Submit" class="submit">
+  </form>
+    <ul>
+    {{#todos}}
+    <li id="{{id}}">
+    <button onclick="change({{id}})" id="button">Completed!</button>{{name}}
+    </li>
+    {{/todos}}
+    </ul>
+    <h2> Completed Tasks </h2>
+    {{#done}}
+    <ul>
+      <li> {{name}} </li>
+    </ul>
+    {{/done}}
   </body>
 </html>

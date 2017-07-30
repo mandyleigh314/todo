@@ -1,0 +1,25 @@
+body {
+  font-family: 'Shadows Into Light Two', cursive;
+}
+
+h1 {
+  font-family: 'Permanent Marker', cursive;
+}
+
+li {
+  list-style: none;
+  padding: 10px;
+  margin: 10px;
+}
+
+.submit {
+  font-family: 'Shadows Into Light Two', cursive;
+  background-color: #ae7dc6;
+}
+
+button {
+  padding: 10px;
+  margin: 10px;
+  font-family: 'Coming Soon', cursive;
+  background-color: #caf5b9;
+}
