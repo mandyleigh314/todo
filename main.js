@@ -1,8 +1,19 @@
 const express = require('express')
 const mustacheExpress = require('mustache-express')
 const bodyParser = require('body-parser')
+const expressSession = require('express-session')
 
 app = express()
+
+let i = 1
+
+app.use(
+  expressSession({
+    secret: 'keyboard cat',
+    resave: false,
+    saveUninitialized: true
+  })
+)
 
 app.use(express.static('public'))
 app.use(bodyParser.json())
@@ -12,28 +23,36 @@ app.engine('mst', mustacheExpress())
 app.set('views', './templates')
 app.set('view engine', 'mst')
 
-let todos = []
-let i = 1
-let done = []
-
 app.get('/', (req, res) => {
-  res.render('home', { todos: todos, done: done })
+  if (!req.session.todos) {
+    req.session.todos = []
+  }
+  if (!req.session.done) {
+    req.session.done = []
+  }
+  res.render('home', { todos: req.session.todos, done: req.session.done })
 })
 
 app.post('/', (req, res) => {
+  todos = req.session.todos
   todos.push({ name: req.body.todo, id: i })
   i++
+  req.session.todos = todos
   res.redirect('/')
 })
 
 app.post('/complete', (req, res) => {
+  todos = req.session.todos
+  done = req.session.done
   let item = todos.find(todo => {
     return req.body.id == todo.id
   })
-  done.push(item)
   let doneitem = todos.indexOf(item)
   todos.splice(doneitem, 1)
-  res.json()
+  done.push(item)
+  req.session.done = done
+  req.session.todos = todos
+  res.redirect('/')
 })
 
 app.listen(3000, () => {

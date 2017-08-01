@@ -11,7 +11,8 @@ function change(id) {
 fetch("/complete", {
   method: "POST",
   headers: {'Content-Type': 'application/json'},
-  body: JSON.stringify({id: id})
+  body: JSON.stringify({id: id}),
+  credentials: 'include'
 }).then( function() {location.reload()})
 }
     </script>
